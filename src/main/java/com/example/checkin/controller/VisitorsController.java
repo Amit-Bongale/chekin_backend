@@ -2,6 +2,7 @@ package com.example.checkin.controller;
 
 import com.example.checkin.models.Visitors;
 import com.example.checkin.service.VisitorsService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +35,30 @@ public class VisitorsController {
 
     @PostMapping("/add")
     public Visitors addVisitor(@RequestBody Visitors visitor){
-        return visitorsService.saveVisior(visitor);
+        try {
+            return visitorsService.saveVisitor(visitor);
+        } catch (Exception e){
+            throw new RuntimeException("Error saving" + e.getMessage(), e);
+        }
     }
 
     @PostMapping("/update/{id}")
-    public Visitors updateVisitor(@PathVariable Long id , @RequestBody Visitors visitor){
-        visitor.setId(id);
-        return visitorsService.saveVisior(visitor);
+    public Visitors updateVisitor(@PathVariable Long id , @RequestBody Visitors updatedVisitor){
+        Visitors existingVisitor = visitorsService.getVisitorByID(id)
+                .orElseThrow(() -> new EntityNotFoundException("Visitor not found"));
+
+        existingVisitor.setName(updatedVisitor.getName());
+        existingVisitor.setMobile(updatedVisitor.getMobile());
+        existingVisitor.setCheckinTime(updatedVisitor.getCheckinTime());
+        existingVisitor.setDuration(updatedVisitor.getDuration());
+        existingVisitor.setCheckoutTime(updatedVisitor.getCheckoutTime());
+        existingVisitor.setCheckinDate(updatedVisitor.getCheckinDate());
+        existingVisitor.setVisiting(updatedVisitor.getVisiting());
+        existingVisitor.setPurpose(updatedVisitor.getPurpose());
+        existingVisitor.setStatus(updatedVisitor.getStatus());
+
+        return visitorsService.saveVisitor(existingVisitor);
+
     }
 
     @GetMapping("/checkedin")

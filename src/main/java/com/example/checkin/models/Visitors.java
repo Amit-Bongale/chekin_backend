@@ -25,6 +25,9 @@ public class Visitors {
     private String purpose;
     private Boolean status;
 
+    @Version
+    private Integer version;
+
     public Long getId() {
         return id;
     }

@@ -25,7 +25,7 @@ public class VisitorsService {
         return visitorsRepository.findById(id);
     }
 
-    public Visitors saveVisior(Visitors visitor){
+    public Visitors saveVisitor(Visitors visitor){
         return visitorsRepository.save(visitor);
     }
 
