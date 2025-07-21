@@ -24,7 +24,7 @@ public class VisitorsController {
     private VisitorsService visitorsService;
 
     @GetMapping("/")
-    public List<Visitors> getallVisitors(){
+    public List<Visitors> getAllVisitors(){
         return visitorsService.getAllVisitors();
     }
 
@@ -33,14 +33,32 @@ public class VisitorsController {
         return visitorsService.getVisitorByID(id);
     }
 
+
     @PostMapping("/add")
-    public Visitors addVisitor(@RequestBody Visitors visitor){
+    public Visitors addVisitor(@RequestBody Visitors visitor) {
         try {
+            // set status as checked-in
+            visitor.setStatus(true);
+
+            // set current check-in date and time
+            visitor.setCheckinTime(java.sql.Time.valueOf(java.time.LocalTime.now()));
+            visitor.setCheckinDate(new java.sql.Date(System.currentTimeMillis()));
+
             return visitorsService.saveVisitor(visitor);
-        } catch (Exception e){
-            throw new RuntimeException("Error saving" + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error saving visitor: " + e.getMessage(), e);
         }
     }
+
+
+//    @PostMapping("/add")
+//    public Visitors addVisitor(@RequestBody Visitors visitor){
+//        try {
+//            return visitorsService.saveVisitor(visitor);
+//        } catch (Exception e){
+//            throw new RuntimeException("Error saving" + e.getMessage(), e);
+//        }
+//    }
 
     @PostMapping("/update/{id}")
     public Visitors updateVisitor(@PathVariable Long id , @RequestBody Visitors updatedVisitor){
