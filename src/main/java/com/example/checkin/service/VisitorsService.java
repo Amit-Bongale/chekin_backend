@@ -39,10 +39,10 @@ public class VisitorsService {
 
     public Visitors checkoutVisitor(Visitors visitor){
         if(visitor.getCheckinTime() != null && visitor.getCheckoutTime() != null){
-            LocalTime chekin = visitor.getCheckinTime().toLocalTime();
+            LocalTime checkin = visitor.getCheckinTime().toLocalTime();
             LocalTime checkout = visitor.getCheckoutTime().toLocalTime();
 
-            int duration = (int) Duration.between(chekin , checkout).toMinutes();
+            int duration = (int) Duration.between(checkin , checkout).toMinutes();
             visitor.setDuration(duration);
 
             visitor.setStatus(false);
