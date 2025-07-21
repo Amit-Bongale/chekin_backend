@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
-import javax.swing.text.html.Option;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,16 +50,6 @@ public class VisitorsController {
         }
     }
 
-
-//    @PostMapping("/add")
-//    public Visitors addVisitor(@RequestBody Visitors visitor){
-//        try {
-//            return visitorsService.saveVisitor(visitor);
-//        } catch (Exception e){
-//            throw new RuntimeException("Error saving" + e.getMessage(), e);
-//        }
-//    }
-
     @PostMapping("/update/{id}")
     public Visitors updateVisitor(@PathVariable Long id , @RequestBody Visitors updatedVisitor){
         Visitors existingVisitor = visitorsService.getVisitorByID(id)
@@ -91,6 +81,7 @@ public class VisitorsController {
 
     @PostMapping("/checkout/{id}")
     public ResponseEntity<?> chekoutVisitor(@PathVariable Long id){
+
         Optional <Visitors> optionalVisitor = visitorsService.getVisitorByID(id);
 
         if(optionalVisitor.isEmpty()){
@@ -105,6 +96,18 @@ public class VisitorsController {
 
         Time now = Time.valueOf(LocalTime.now());
         visitor.setCheckoutTime(now);
+
+
+        if(visitor.getCheckinTime() != null && visitor.getCheckoutTime() != null){
+            LocalTime checkin = visitor.getCheckinTime().toLocalTime();
+            LocalTime checkout = visitor.getCheckoutTime().toLocalTime();
+
+            int duration = (int) Duration.between(checkin , checkout).toMinutes();
+            visitor.setDuration(duration);
+
+            visitor.setStatus(false);
+        }
+
 
         Visitors checkoutVisitor = visitorsService.checkoutVisitor(visitor);
 

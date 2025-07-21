@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,16 +36,6 @@ public class VisitorsService {
     }
 
     public Visitors checkoutVisitor(Visitors visitor){
-        if(visitor.getCheckinTime() != null && visitor.getCheckoutTime() != null){
-            LocalTime checkin = visitor.getCheckinTime().toLocalTime();
-            LocalTime checkout = visitor.getCheckoutTime().toLocalTime();
-
-            int duration = (int) Duration.between(checkin , checkout).toMinutes();
-            visitor.setDuration(duration);
-
-            visitor.setStatus(false);
-        }
-
         return visitorsRepository.save(visitor);
     }
 
