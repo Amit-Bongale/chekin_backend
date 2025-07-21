@@ -3,6 +3,7 @@ package com.example.checkin.controller;
 import com.example.checkin.jwt.JwtUtil;
 import com.example.checkin.models.Users;
 import com.example.checkin.service.UserDetailsService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,5 +43,24 @@ public class AuthController {
         final String token = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok().body("Bearer " + token);
+    }
+
+    @GetMapping("/verify-token")
+    public  ResponseEntity<?> verifyToken(@RequestHeader("Authorization") String authHeader){
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+            return ResponseEntity.badRequest().body("Unauthorized");
+        }
+
+        String token = authHeader.substring(7);
+
+        try {
+            Claims claims = jwtUtil.getClaims(token);
+            String role = (String) claims.get("role");
+
+            return ResponseEntity.ok().body("role: " + role);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Invalid Token");
+
+        }
     }
 }

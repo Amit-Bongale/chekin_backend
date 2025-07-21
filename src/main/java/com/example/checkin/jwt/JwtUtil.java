@@ -16,7 +16,7 @@ import java.util.Map;
 @Component
 public class JwtUtil {
 
-    private static final String secret = String.valueOf(Jwts.SIG.HS256.key().build());;
+    private static final String secret = String.valueOf(Jwts.SIG.HS256.key().build());
     private static final Key KEY = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
     public String generateToken(UserDetails userDetails){
@@ -32,7 +32,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    private Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         return Jwts.parser().verifyWith((SecretKey) KEY). build().parseSignedClaims(token).getPayload();
     }
 
