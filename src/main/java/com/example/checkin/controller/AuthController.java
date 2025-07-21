@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*") // optional: allows frontend requests
 public class AuthController {
 
     @Autowired
@@ -57,10 +56,9 @@ public class AuthController {
             Claims claims = jwtUtil.getClaims(token);
             String role = (String) claims.get("role");
 
-            return ResponseEntity.ok().body("role: " + role);
+            return ResponseEntity.ok().body(role);
         } catch (Exception e) {
             return ResponseEntity.status(401).body("Invalid Token");
-
         }
     }
 }

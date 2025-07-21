@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/visitors")
-@CrossOrigin(origins = "*")
 public class VisitorsController {
 
     @Autowired
