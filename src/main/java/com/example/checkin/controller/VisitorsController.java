@@ -78,6 +78,11 @@ public class VisitorsController {
         return visitorsService.getVisitorsByDate(date);
     }
 
+    @GetMapping("/checkedin/{startdate}/{enddate}")
+    public List<Visitors> getVisitorsBetweenDates(@PathVariable Date startdate , @PathVariable Date enddate){
+        return  visitorsService.getVisitorsBetweenDates(startdate, enddate);
+    }
+
     @PostMapping("/checkout/{id}")
     public ResponseEntity<?> chekoutVisitor(@PathVariable Long id){
 

@@ -35,6 +35,10 @@ public class VisitorsService {
         return visitorsRepository.findByCheckinDate(checkinDate);
     }
 
+    public List<Visitors> getVisitorsBetweenDates(Date startdate , Date enddate){
+        return  visitorsRepository.findAllByCheckinDateBetween(startdate , enddate);
+    }
+
     public Visitors checkoutVisitor(Visitors visitor){
         return visitorsRepository.save(visitor);
     }

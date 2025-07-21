@@ -15,4 +15,5 @@ public interface VisitorsRepository extends JpaRepository<Visitors ,Long> {
 
     List<Visitors> findByCheckinDate(Date checkinDate);
 
+    List<Visitors> findAllByCheckinDateBetween(Date startDate, Date endDate);
 }
