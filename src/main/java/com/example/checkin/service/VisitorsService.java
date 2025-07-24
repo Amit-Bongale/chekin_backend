@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class VisitorsService {
@@ -41,6 +41,20 @@ public class VisitorsService {
 
     public Visitors checkoutVisitor(Visitors visitor){
         return visitorsRepository.save(visitor);
+    }
+
+    public Map<String , Object> visitorsStats(LocalDate date){
+        long totalVisitors = visitorsRepository.countByCheckinDate(date);
+        long checkedInVisitorss = visitorsRepository.countByCheckinDateAndStatus(date , true);
+        long checkedOutVisitors = visitorsRepository.countByCheckinDateAndStatus(date , false);
+        Double avgDuration = visitorsRepository.findAverageDurationByDate(date);
+
+        Map<String , Object> response = new HashMap<>();
+        response.put("totalVisitors" , totalVisitors);
+        response.put("checkedInVisitors" , checkedInVisitorss);
+        response.put("CheckedOutVisitors" , checkedOutVisitors);
+        response.put("avgDuration" , avgDuration != null ? avgDuration : 0);
+        return response;
     }
 
 }

@@ -11,8 +11,11 @@ import org.springframework.http.HttpStatus;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -116,6 +119,11 @@ public class VisitorsController {
         Visitors checkoutVisitor = visitorsService.checkoutVisitor(visitor);
 
         return ResponseEntity.ok(checkoutVisitor);
+    }
+
+    @GetMapping("/stats/{date}")
+    public Map<String , Object> getVisitorsStat(@PathVariable LocalDate date){
+        return visitorsService.visitorsStats(date);
     }
 
 }
