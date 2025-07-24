@@ -32,6 +32,7 @@ public class UserService {
 
         existinguser.setUsername(updateuser.getUsername());
         existinguser.setRole(updateuser.getRole());
+        existinguser.setMobile(updateuser.getMobile());
 
         if(!existinguser.getPassword().equals(existinguser.getPassword())){
             existinguser.setPassword(encoder.encode(existinguser.getPassword()));

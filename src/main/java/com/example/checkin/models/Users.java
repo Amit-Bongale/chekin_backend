@@ -16,6 +16,16 @@ public class Users {
     private String password;
     private String role;
 
+    public Long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(Long mobile) {
+        this.mobile = mobile;
+    }
+
+    private Long mobile;
+
     public Long getId() {
         return id;
     }
