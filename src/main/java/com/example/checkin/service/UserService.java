@@ -1,12 +1,12 @@
 package com.example.checkin.service;
 import com.example.checkin.models.Users;
 import com.example.checkin.repo.UserRepository;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -48,7 +48,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public  Users updateLogin(String username){
+    public Users updateLogin(String username){
         return userRepository.findByUsername(username)
                 .map(user -> {
                     user.setStatus(true);
@@ -64,6 +64,14 @@ public class UserService {
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+    }
+
+    public List<Users> ActiveUsres(){
+        return userRepository.findByStatusTrue();
+    }
+
+    public long ActiveUsersCount(){
+        return  userRepository.countByStatusTrue();
     }
 
 

@@ -56,4 +56,17 @@ public class UserController {
         return  ResponseEntity.ok("status updated");
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/count/active")
+    public long ActiveUsersCount(){
+        return userService.ActiveUsersCount();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/active")
+    public List<Users> ActiveUserst(){
+        return userService.ActiveUsres();
+    }
+
+
 }
