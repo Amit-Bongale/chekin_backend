@@ -24,11 +24,26 @@ public class Visitors {
     private String visiting;
     private String purpose;
     private Boolean status;
+    private String checkedInBy;
 
     @Version
     private Integer version;
 
+    public String getCheckedInBy() {
+        return checkedInBy;
+    }
 
+    public void setCheckedInBy(String checkedInBy) {
+        this.checkedInBy = checkedInBy;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public Long getId() {
         return id;

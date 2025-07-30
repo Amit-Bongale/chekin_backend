@@ -1,13 +1,8 @@
 package com.example.checkin.service;
-
 import com.example.checkin.models.Users;
 import com.example.checkin.repo.UserRepository;
-import io.jsonwebtoken.security.Password;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +14,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
-
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+
 
     public Users saveuser(Users user) {
         user.setPassword(encoder.encode(user.getPassword()));
@@ -53,4 +47,24 @@ public class UserService {
 
         userRepository.deleteById(id);
     }
+
+    public  Users updateLogin(String username){
+        return userRepository.findByUsername(username)
+                .map(user -> {
+                    user.setStatus(true);
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+    }
+
+    public Users updateLogout(String username){
+        return userRepository.findByUsername(username)
+                .map(user -> {
+                    user.setStatus(false);
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+    }
+
+
 }

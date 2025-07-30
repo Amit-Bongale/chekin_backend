@@ -25,6 +25,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/add")
     public Users addUsers(@RequestBody Users user){
+        user.setStatus(false);
         return userService.saveuser(user);
     }
 
@@ -40,6 +41,19 @@ public class UserController {
     public ResponseEntity<String> deleteUser(@PathVariable Long id){
         userService.deleteUser(id);
         return ResponseEntity.ok("User Deleted Successfully");
+    }
+
+
+    @PostMapping("/update/login/{username}")
+    public ResponseEntity<String> updatelogin(@PathVariable String username){
+         userService.updateLogin(username);
+        return  ResponseEntity.ok("status updated");
+    }
+
+    @PostMapping("/update/logout/{username}")
+    public ResponseEntity<String> updatelogoutstatus(@PathVariable String username){
+        userService.updateLogout(username);
+        return  ResponseEntity.ok("status updated");
     }
 
 }

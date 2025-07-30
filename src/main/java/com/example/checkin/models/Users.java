@@ -15,6 +15,16 @@ public class Users {
     private String username;
     private String password;
     private String role;
+    private Boolean status;
+    private Long mobile;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
 
     public Long getMobile() {
         return mobile;
@@ -24,7 +34,6 @@ public class Users {
         this.mobile = mobile;
     }
 
-    private Long mobile;
 
     public Long getId() {
         return id;
