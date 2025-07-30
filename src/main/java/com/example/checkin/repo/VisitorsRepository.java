@@ -25,4 +25,6 @@ public interface VisitorsRepository extends JpaRepository<Visitors ,Long> {
 
     @Query("SELECT AVG(v.duration) FROM Visitors v WHERE v.checkinDate = :date")
     Double findAverageDurationByDate(@Param("date") LocalDate date);
+
+    List<Visitors> findByCheckinDateAndStatus(Date date, Boolean status);
 }
