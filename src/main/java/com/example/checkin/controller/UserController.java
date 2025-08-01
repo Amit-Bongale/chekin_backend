@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/users")
@@ -20,6 +22,12 @@ public class UserController {
     @GetMapping("/")
     public List<Users> getUser(){
         return userService.getallUserss();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public Optional<Users> getUser(@PathVariable Long id){
+        return userService.getUser(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

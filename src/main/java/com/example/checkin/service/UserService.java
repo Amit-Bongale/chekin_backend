@@ -1,12 +1,12 @@
 package com.example.checkin.service;
 import com.example.checkin.models.Users;
 import com.example.checkin.repo.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -26,6 +26,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Optional<Users> getUser(Long id){
+        return userRepository.findById(id);
+    }
+
     public Users updateUser(Long id , Users updateuser){
         Users existinguser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not Found"));
 
@@ -33,8 +37,10 @@ public class UserService {
         existinguser.setRole(updateuser.getRole());
         existinguser.setMobile(updateuser.getMobile());
 
-        if(!updateuser.getPassword().equals(existinguser.getPassword())){
-            existinguser.setPassword(encoder.encode(updateuser.getPassword()));
+        if (updateuser.getPassword() != null && !updateuser.getPassword().isBlank()) {
+            if(!updateuser.getPassword().equals(existinguser.getPassword())){
+                existinguser.setPassword(encoder.encode(updateuser.getPassword()));
+            }
         }
 
         return userRepository.save(existinguser);
