@@ -14,4 +14,7 @@ public interface UserRepository extends JpaRepository <Users , Long>{
     List<Users> findByStatusTrue();
 
     long countByStatusTrue();
+
+    List<Users> findByRole(String staff);
+    List<Users> findByRoleNot(String superAdmin);
 }

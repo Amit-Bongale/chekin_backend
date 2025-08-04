@@ -43,4 +43,10 @@ public class JwtUtil {
     public Boolean ValidateToken(String token , UserDetails userDetails){
         return extractusername(token).equals(userDetails.getUsername());
     }
+
+    public String extractRole(String token){
+        Claims claims = getClaims(token);
+        return claims.get("role" , String.class);
+    }
+
 }
