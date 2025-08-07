@@ -60,23 +60,5 @@ public class VisitorsService {
         return response;
     }
 
-
-    // Runs every day at 11:59 PM
-    @Scheduled(cron = "0 59 23 * * *")
-    public void autoCheckoutVisitors(){
-        List<Visitors> StillCheckedIn = visitorsRepository.findByCheckinDateAndStatus( java.sql.Date.valueOf(LocalDate.now()) , true);
-
-        Time now = Time.valueOf(LocalTime.now());
-
-        for(Visitors v: StillCheckedIn){
-            v.setCheckoutTime(now);
-            v.setStatus(false);
-            v.setDuration(null);
-        }
-
-        visitorsRepository.saveAll(StillCheckedIn);
-        System.out.println("Auto Checkout Completed for " + StillCheckedIn.size() + "Visitors.");
-    }
-
 }
 
