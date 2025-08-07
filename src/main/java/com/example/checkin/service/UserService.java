@@ -1,10 +1,14 @@
 package com.example.checkin.service;
 import com.example.checkin.models.Users;
+import com.example.checkin.models.UsersLog;
 import com.example.checkin.repo.UserRepository;
+import com.example.checkin.repo.UsersLogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +17,9 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UsersLogRepository usersLogRepository;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
@@ -62,21 +69,41 @@ public class UserService {
     }
 
     public Users updateLogin(String username){
-        return userRepository.findByUsername(username)
+        Users users = userRepository.findByUsername(username)
                 .map(user -> {
                     user.setStatus(true);
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+
+        UsersLog userlog = new UsersLog();
+        userlog.setUsername(users.getUsername());
+        userlog.setRole(users.getRole());
+        userlog.setLoginTime(LocalDateTime.now());
+        usersLogRepository.save(userlog);
+
+        return  users;
+
     }
 
     public Users updateLogout(String username){
-        return userRepository.findByUsername(username)
+        Users users = userRepository.findByUsername(username)
                 .map(user -> {
                     user.setStatus(false);
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+
+        List<UsersLog> logs = usersLogRepository.findByUsername(username);
+        Optional<UsersLog> lastlog = logs.stream().filter(log -> log.getLogoutTime() == null )
+                .sorted(Comparator.comparing(UsersLog::getLoginTime).reversed()).findFirst();
+
+        lastlog.ifPresent(log -> {
+            log.setLogoutTime(LocalDateTime.now());
+            usersLogRepository.save(log);
+        });
+
+        return users;
     }
 
     public List<Users> ActiveUsres(){

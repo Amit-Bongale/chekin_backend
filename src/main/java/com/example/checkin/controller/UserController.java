@@ -64,6 +64,14 @@ public class UserController {
         String loggedInRole = loggedInUser.getRole();
         String newUserRole = user.getRole();
 
+
+        Optional<Users> existingUser = userService.getUserByName(user.getUsername());
+        if (existingUser.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Username already exists. Please choose a different one.");
+        }
+
+
         if (loggedInRole.equals("admin")) {
             if (!newUserRole.equals("staff")) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
