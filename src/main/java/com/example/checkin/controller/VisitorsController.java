@@ -51,25 +51,25 @@ public class VisitorsController {
             throw new RuntimeException("Error saving visitor: " + e.getMessage(), e);
         }
     }
-
-    @PostMapping("/update/{id}")
-    public Visitors updateVisitor(@PathVariable Long id , @RequestBody Visitors updatedVisitor){
-        Visitors existingVisitor = visitorsService.getVisitorByID(id)
-                .orElseThrow(() -> new EntityNotFoundException("Visitor not found"));
-
-        existingVisitor.setName(updatedVisitor.getName());
-        existingVisitor.setMobile(updatedVisitor.getMobile());
-        existingVisitor.setCheckinTime(updatedVisitor.getCheckinTime());
-        existingVisitor.setDuration(updatedVisitor.getDuration());
-        existingVisitor.setCheckoutTime(updatedVisitor.getCheckoutTime());
-        existingVisitor.setCheckinDate(updatedVisitor.getCheckinDate());
-        existingVisitor.setVisiting(updatedVisitor.getVisiting());
-        existingVisitor.setPurpose(updatedVisitor.getPurpose());
-        existingVisitor.setStatus(updatedVisitor.getStatus());
-
-        return visitorsService.saveVisitor(existingVisitor);
-
-    }
+//
+//    @PostMapping("/update/{id}")
+//    public Visitors updateVisitor(@PathVariable Long id , @RequestBody Visitors updatedVisitor){
+//        Visitors existingVisitor = visitorsService.getVisitorByID(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Visitor not found"));
+//
+//        existingVisitor.setName(updatedVisitor.getName());
+//        existingVisitor.setMobile(updatedVisitor.getMobile());
+//        existingVisitor.setCheckinTime(updatedVisitor.getCheckinTime());
+//        existingVisitor.setDuration(updatedVisitor.getDuration());
+//        existingVisitor.setCheckoutTime(updatedVisitor.getCheckoutTime());
+//        existingVisitor.setCheckinDate(updatedVisitor.getCheckinDate());
+//        existingVisitor.setVisiting(updatedVisitor.getVisiting());
+//        existingVisitor.setPurpose(updatedVisitor.getPurpose());
+//        existingVisitor.setStatus(updatedVisitor.getStatus());
+//
+//        return visitorsService.saveVisitor(existingVisitor);
+//
+//    }
 
     @GetMapping("/checkedin")
     public List<Visitors> getCheckInVisitors(){
