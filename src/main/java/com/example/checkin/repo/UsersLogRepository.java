@@ -15,7 +15,7 @@ import java.util.List;
 public interface UsersLogRepository extends JpaRepository<UsersLog , Long> {
     List<UsersLog> findByUsername(String username);
 
-    List<UsersLog> findAllByLoginTimeBetween(LocalDateTime start, LocalDateTime end);
+    List<UsersLog> findAllByLoginTimeBetweenAndRoleNot(LocalDateTime start, LocalDateTime end, String role);
 
     List<UsersLog> findByLogoutTimeIsNull();
 }

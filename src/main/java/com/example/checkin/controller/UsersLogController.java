@@ -41,7 +41,7 @@ public class UsersLogController {
         LocalDateTime start = startdate.atStartOfDay();
         LocalDateTime end = enddate.atTime(LocalTime.MAX);
 
-        List<UsersLog> result = usersLogRepository.findAllByLoginTimeBetween(start, end);
+        List<UsersLog> result = usersLogRepository.findAllByLoginTimeBetweenAndRoleNot(start, end , "super_admin");
         return ResponseEntity.ok(result);
     }
 
